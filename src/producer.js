@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 dotenv.config({ path: '../.env' });
 
 const rabbitmq_url = `amqp://${process.env.USERNAME}:${process.env.PASSWORD}@${process.env.URL}`;
+const exchange = "AVG_operations";
 
 const operations = ["add", "sub", "mul", "div"];
 
@@ -26,11 +27,11 @@ async function send() {
     // Création du channel
     const channel = await connection.createChannel();
 
-    const { queue } = await channel.assertQueue("add_worker")
+    await channel.assertExchange(exchange, "direct", { durable: false });
 
     const [query, operation] = createCalc();
 
-    channel.sendToQueue(queue, Buffer.from(JSON.stringify(query)));
+    channel.publish(exchange, operation, Buffer.from(JSON.stringify(query)));
 
     console.log("Message envoyé");
 
