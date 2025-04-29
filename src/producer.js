@@ -1,18 +1,22 @@
-const amqplib = require('amqplib');
-import random from 'random';
 
-const rabbitmq_url = 'amqp://'+process.env.USER+':'+process.env.PASSWORD+'@'+process.env.URL;
+import random from 'random';
+import amqplib from 'amqplib';
+import dotenv from 'dotenv';
+
+dotenv.config({ path: '../.env' });
+
+const rabbitmq_url = `amqp://${process.env.USERNAME}:${process.env.PASSWORD}@${process.env.URL}`;
 const exchange = 'AVG_project_calc_exchange';
 const message = 'Bonjour !' + Date.now();
 
 const operations = ["add", "sub", "mul", "div"];
 
 function createCalc(){
-    const first = random.int((min = 0), (max = 100));
-    const second = random.int((min = 0), (max = 100));
+    const first = random.int(0,100);
+    const second = random.int(0,1000);
     const query = "{ 'n1': "+first+", 'n2': "+second+"}";
 
-    const operation = operations[random.int((min = 0), (max = 3))];
+    const operation = operations[random.int(0,3)];
 
     return [query, operation];
 }
