@@ -1,41 +1,45 @@
 const amqplib = require('amqplib');
+import random from 'random';
 
 const rabbitmq_url = 'amqp://'+process.env.USER+':'+process.env.PASSWORD+'@'+process.env.URL;
-const queue = 'AVG_project_calc_query';
+const exchange = 'AVG_project_calc_exchange';
 const message = 'Bonjour !' + Date.now();
 
+const operations = ["add", "sub", "mul", "div"];
+
 function createCalc(){
-    const first = rand();
-    const second = rand();
+    const first = random.int((min = 0), (max = 100));
+    const second = random.int((min = 0), (max = 100));
     const query = {
         "n1": first,
         "n2": second
     };
 
-    return query;
+    const operation = operations[random.int((min = 0), (max = 3))];
+
+    return [query, operation];
 }
 
 async function send() {
     // Connexion
     const connection = await amqplib.connect(rabbitmq_url);
-    
+
+    const {query, operation} = createCalc();
+
     // Création du channel
     const channel = await connection.createChannel();
 
-    // Assertion sur l'existence de la queue
-    await channel.assertQueue(queue, { durable: false });
+    await channel.assertExchange(exchange, "direct", { durable: false });
 
-    // Envoi du message
-    channel.sendToQueue(queue, Buffer.from(message));
+    channel.publish(exchange, operation, Buffer.from(query));
 
-    console.log("Message envoyé !");
+    console.log("Message envoyé");
 
     // Fermeture de la connexion
-    setTimeout(function() {
+    setTimeout(function () {
         connection.close();
         process.exit(0);
     }, 200);
-
 }
 
 send();
