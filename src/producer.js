@@ -27,13 +27,13 @@ async function send() {
     // Création du channel
     const channel = await connection.createChannel();
 
-    await channel.assertExchange(exchange, "direct", { durable: false });
+    await channel.assertExchange(exchange, "direct", { durable: true });
 
     const [query, operation] = createCalc();
 
     channel.publish(exchange, operation, Buffer.from(JSON.stringify(query)));
 
-    console.log("Message envoyé");
+    console.log("Message envoyé avec l'opération : ", operation);
 
     return
 }
@@ -42,6 +42,6 @@ async function send() {
 function sendMessagesIndefinitely() {
     send().catch(err => console.error('Error sending message:', err));
     
-    setTimeout(sendMessagesIndefinitely, 5000);
+    setTimeout(sendMessagesIndefinitely, 3000);
 }
 sendMessagesIndefinitely();

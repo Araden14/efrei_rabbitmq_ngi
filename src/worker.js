@@ -1,40 +1,51 @@
 import amqplib from 'amqplib';
 import dotenv from 'dotenv';
-dotenv.config({ path: '../../.env' });
 
+dotenv.config({ path: '../.env' });
 
 const rabbitmq_url = `amqp://${process.env.USERNAME}:${process.env.PASSWORD}@${process.env.URL}`;
-const queue = 'div_worker';
+console.log(rabbitmq_url)
+const queue = `${process.argv[2]}_worker`
+const exchange = "AVG_operations"
+const routing_key = process.argv[2]
 const results_queue = "results"
+const operation = {
+    "add": "+",
+    "sub": "-",
+    "mul": "*",
+    "div": "/"
+}
 
 
 const connection = await amqplib.connect(rabbitmq_url);
 
-async function receive_div() {
+async function receive_add() {
     const channel = await connection.createChannel();
-    await channel.assertQueue(queue, { durable: true, autoDelete: false });
+    await channel.assertExchange(exchange, "direct", { durable: true, autoDelete: false });
+    await channel.assertQueue(queue, { durable: true, autoDelete: false})
     await channel.assertQueue(results_queue, { durable: true, autoDelete: false})
+    await channel.bindQueue(queue, exchange, routing_key);
 
     channel.consume(queue, (msg) => {
         if (msg !== null) {
             console.log("Message reçu : ", msg.content.toString());
             const content = JSON.parse(msg.content.toString().replace(/'/g, '"'));
-            console.log(`Requête de division reçue : ${content.n1} / ${content.n2}`);
+            console.log(`Requête ${operation[routing_key]} reçue : ${content.n1} ${operation[routing_key]} ${content.n2}`);
             
-            // Simuler un traitement long
-            const waitTime = Math.floor(Math.random() * 10000) + 5000;
-
-            if (content.n2 === 0) {
+            if (routing_key === "div" && content.n2 === 0) {
                 console.log("Division par zéro impossible");
                 channel.ack(msg);
                 return;
             }
+            // Simuler un traitement long
+            const waitTime = Math.floor(Math.random() * 10000) + 5000;
+            
             setTimeout(() => {
                 const result = { 
                     n1: content.n1,
                     n2: content.n2,
-                    op: "div",
-                    result: content.n1 / content.n2 
+                    op: routing_key,
+                    result: content.n1 + content.n2 
                 };
                 console.log(result);
                 channel.sendToQueue(results_queue, Buffer.from(JSON.stringify(result)));
@@ -44,4 +55,4 @@ async function receive_div() {
     });
 }
 
-receive_div();
+receive_add();
