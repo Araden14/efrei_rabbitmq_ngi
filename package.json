@@ -11,6 +11,7 @@
   "description": "",
   "dependencies": {
     "amqplib": "^0.10.7",
-    "dotenv": "^16.5.0"
+    "dotenv": "^16.5.0",
+    "random": "^5.4.0"
   }
 }
