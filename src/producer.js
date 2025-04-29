@@ -10,10 +10,7 @@ const operations = ["add", "sub", "mul", "div"];
 function createCalc(){
     const first = random.int((min = 0), (max = 100));
     const second = random.int((min = 0), (max = 100));
-    const query = {
-        "n1": first,
-        "n2": second
-    };
+    const query = "{ 'n1': "+first+", 'n2': "+second+"}";
 
     const operation = operations[random.int((min = 0), (max = 3))];
 
@@ -24,13 +21,12 @@ async function send() {
     // Connexion
     const connection = await amqplib.connect(rabbitmq_url);
 
-    const {query, operation} = createCalc();
-
     // Création du channel
     const channel = await connection.createChannel();
 
     await channel.assertExchange(exchange, "direct", { durable: false });
 
+    const {query, operation} = createCalc();
     channel.publish(exchange, operation, Buffer.from(query));
 
     console.log("Message envoyé");
