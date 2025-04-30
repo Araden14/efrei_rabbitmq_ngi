@@ -49,7 +49,7 @@ async function send(exchange, exchangeAll, operations) {
 
     await channel.assertExchange(exchangeAll, "fanout", { durable: true });
 
-    channel.publish(exchange, "", Buffer.from(JSON.stringify(query)));
+    channel.publish(exchangeAll, "", Buffer.from(JSON.stringify(query)));
 
     console.log("Message envoyé avec l'opération : all");
 

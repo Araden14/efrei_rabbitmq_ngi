@@ -26,6 +26,10 @@ async function receive() {
         durable: true,
         autoDelete: false,
     });
+    await channel.assertExchange(exchangeAll, "fanout", {
+        durable: true,
+        autoDelete: false,
+    });
     await channel.assertQueue(queue, { durable: true, autoDelete: false });
     await channel.assertQueue(results_queue, {
         durable: true,
