@@ -18,7 +18,7 @@ Installer les librairies node:
 npm install
 ```
 
-Après ça vous pouvez lancer les procéssus dans des terminaux différents (vous pouvez aussi les lancer les workers en tâche de fond):
+Après ça vous pouvez lancer les procéssus dans des terminaux différents (vous pouvez aussi lancer les workers en tâche de fond):
 
 ```
 npm run listener
