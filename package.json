@@ -3,7 +3,13 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "producer": "node --env-file=.env src/producer.js",
+    "listener": "node --env-file=.env src/results_client.js",
+    "add_worker": "node --env-file=.env src/worker.js add",
+    "sub_worker": "node --env-file=.env src/worker.js sub",
+    "mul_worker": "node --env-file=.env src/worker.js mul",
+    "div_worker": "node --env-file=.env src/worker.js div"
   },
   "type": "module",
   "author": "",

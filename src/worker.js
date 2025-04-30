@@ -3,9 +3,10 @@ import dotenv from "dotenv";
 
 dotenv.config({ path: "../.env" });
 
-const rabbitmq_url = `amqp://${process.env.USERNAME}:${process.env.PASSWORD}@${process.env.URL}`;
+const rabbitmq_url = `amqp://${process.env.LOGIN}:${process.env.PASSWORD}@${process.env.URL}`;
 console.log(rabbitmq_url);
-const queue = `${process.argv[2]}_worker`;
+const calc = process.argv[2];
+const queue = `${calc}_worker`;
 const exchange = "AVG_operations";
 const exchangeAll = "AVG_operations_all";
 const routing_key = process.argv[2];
@@ -56,7 +57,7 @@ async function receive() {
                     n1: content.n1,
                     n2: content.n2,
                     op: routing_key,
-                    result: content.n1 + content.n2,
+                    result: eval(content.n1 + operation[calc] + content.n2),
                 };
                 console.log(result);
                 channel.sendToQueue(

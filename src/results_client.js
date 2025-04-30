@@ -2,7 +2,7 @@ import amqplib from 'amqplib';
 import dotenv from 'dotenv';
 dotenv.config({ path: '../.env' });
 
-const rabbitmq_url = `amqp://${process.env.USERNAME}:${process.env.PASSWORD}@${process.env.URL}`;
+const rabbitmq_url = `amqp://${process.env.LOGIN}:${process.env.PASSWORD}@${process.env.URL}`;
 const queue = 'results';
 
 const connection = await amqplib.connect(rabbitmq_url);

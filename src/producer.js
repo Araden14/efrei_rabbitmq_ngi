@@ -4,7 +4,8 @@ import dotenv from "dotenv";
 
 dotenv.config({ path: "../.env" });
 
-const rabbitmq_url = `amqp://${process.env.USERNAME}:${process.env.PASSWORD}@${process.env.URL}`;
+const rabbitmq_url = `amqp://${process.env.LOGIN}:${process.env.PASSWORD}@${process.env.URL}`;
+console.log(rabbitmq_url);
 const exchange = "AVG_operations";
 const exchangeAll = "AVG_operations_all";
 
@@ -61,6 +62,6 @@ function sendMessagesIndefinitely(exchange, exchangeAll, operations) {
         console.error("Error sending message:", err)
     );
 
-    setTimeout(sendMessagesIndefinitely, 3000);
+    setTimeout(sendMessagesIndefinitely, 3000, exchange, exchangeAll, operations);
 }
 sendMessagesIndefinitely(exchange, exchangeAll, operations);
