@@ -9,7 +9,9 @@
     "add_worker": "node --env-file=.env src/worker.js add",
     "sub_worker": "node --env-file=.env src/worker.js sub",
     "mul_worker": "node --env-file=.env src/worker.js mul",
-    "div_worker": "node --env-file=.env src/worker.js div"
+    "div_worker": "node --env-file=.env src/worker.js div",
+    "interface": "node --env-file=.env src/index.html",
+    "server": "PORT=3000 node --env-file=.env src/websocket_bridge.js"
   },
   "type": "module",
   "author": "",
@@ -18,7 +20,9 @@
   "dependencies": {
     "amqplib": "^0.10.7",
     "dotenv": "^16.5.0",
+    "express": "^4.18.2",
     "prompts": "^2.4.2",
-    "random": "^5.4.0"
+    "random": "^5.4.0",
+    "socket.io": "^4.7.2"
   }
 }

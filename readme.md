@@ -170,4 +170,4 @@ URL
 
 
 - Mise à disposition d'un mode de lancement du producer manuel via un cli
-    
+- Création d'un serveur avec express qui connecte une interface HTML en websocket au serveur rabbitmq pour aafficher les résultats : cette fonctionnalité n'a pas été complétement finalisé mais un aperçu de l'interface est disponible sur le port 3000 après exécution de la commande `npm run server`
