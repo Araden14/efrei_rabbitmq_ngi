@@ -1,5 +1,9 @@
 L'objectif de ce projet est de concevoir un système de calcul qui utilise rabbitmq, nous avons conçu cette application étape par étape comme il était demandé dans le cahier des charges, nous allons donc diviser ce rapport pour chaque étape.
 
+Arnaud D'ANSELME
+Valeriya SHIN
+Guilherme DE OLIVEIRA DIAS
+
 # Installation
 
 *Veuillez d'abord avoir un serveur RabbitMQ à disposition !*
