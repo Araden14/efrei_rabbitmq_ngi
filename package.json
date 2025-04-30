@@ -18,6 +18,7 @@
   "dependencies": {
     "amqplib": "^0.10.7",
     "dotenv": "^16.5.0",
+    "prompts": "^2.4.2",
     "random": "^5.4.0"
   }
 }
